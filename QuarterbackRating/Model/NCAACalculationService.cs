@@ -12,7 +12,7 @@ namespace QuarterbackRating.Model
 
         private decimal PerformCalculation(decimal passAttempts, decimal passCompletions, decimal passYards, decimal touchdowns, decimal interceptions)
         {
-            passYards = Math.Min(passCompletions * 99, passYards);
+            passYards = passYards >= 0 ? Math.Min(passCompletions * 99, passYards) : Math.Max(-passCompletions * 99, passYards);
             var a = passYards * 8.4M;
             var b = touchdowns * 330;
             var c = passCompletions * 100;
