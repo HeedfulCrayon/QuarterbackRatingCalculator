@@ -92,6 +92,7 @@ namespace QuarterbackRating.ViewModel
 
         private bool CanExecuteCalculation()
         {
+            RaisePropertyChanged(null);
             Error = validationService.ValidateEntries(PassAttempts, PassCompletions, Touchdowns, Interceptions);
             return !validationService.Errors;
         }
