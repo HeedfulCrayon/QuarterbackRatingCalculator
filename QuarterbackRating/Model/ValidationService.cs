@@ -62,9 +62,9 @@ namespace QuarterbackRating.Model
 
         private string ValidatePassCompletions(decimal? passAttempts, decimal? passCompletions)
         {
-            if (!passCompletions.HasValue)
+            if (!passCompletions.HasValue || passCompletions < 0)
             {
-                return "Enter a value for completions";
+                return "Enter a value greater than or equal to zero for completions";
             }
             if (passCompletions > passAttempts)
             {
@@ -75,9 +75,9 @@ namespace QuarterbackRating.Model
 
         private string ValidateTouchdowns(decimal? passCompletions, decimal? touchdowns)
         {
-            if (!touchdowns.HasValue)
+            if (!touchdowns.HasValue || touchdowns < 0)
             {
-                return "Enter a value for touchdowns";
+                return "Enter a value greater than or equal to zero for touchdowns";
             }
             if (passCompletions< touchdowns)
             {
@@ -88,9 +88,9 @@ namespace QuarterbackRating.Model
 
         private string ValidateAttempts(decimal? passAttempts, decimal? passCompletions, decimal? touchdowns, decimal? interceptions)
         {
-            if (!passAttempts.HasValue)
+            if (!passAttempts.HasValue || passAttempts < 1)
             {
-                return "Pass Attempts must have a value";
+                return "Pass Attempts must have a value greater than or equal to one";
             }
             if (passAttempts == 0)
             {
@@ -101,9 +101,9 @@ namespace QuarterbackRating.Model
 
         private string ValidateInterceptions(decimal? interceptions)
         {
-            if (!interceptions.HasValue)
+            if (!interceptions.HasValue || interceptions < 0)
             {
-                return "Enter a value for interceptions";
+                return "Enter a value greater than or equal to zero for interceptions";
             }
             return string.Empty;
         }
