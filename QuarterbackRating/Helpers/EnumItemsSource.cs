@@ -7,8 +7,11 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
 
-namespace QuarterbackRating
+namespace QuarterbackRating.Helpers
 {
+    /// <summary>
+    /// Class to map enum items to visual controls.
+    /// </summary>
     public class EnumItemsSource : Collection<String>, IValueConverter
     {
 

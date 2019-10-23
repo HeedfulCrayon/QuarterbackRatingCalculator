@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>American_football_simple.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
@@ -71,15 +74,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EnumItemsSource.cs" />
+    <Compile Include="Helpers\EnumItemsSource.cs" />
     <Compile Include="League.cs" />
     <Compile Include="Model\ICalculationService.cs" />
+    <Compile Include="Model\IValidationService.cs" />
     <Compile Include="Model\NCAACalculationService.cs" />
     <Compile Include="Model\NFLCalculationService.cs" />
-    <Compile Include="Model\PasserStats.cs" />
-    <Compile Include="TextBoxInputBehavior.cs" />
+    <Compile Include="Model\ValidationService.cs" />
+    <Compile Include="Behaviors\TextBoxInputBehavior.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +124,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="American_football.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="American_football_simple.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

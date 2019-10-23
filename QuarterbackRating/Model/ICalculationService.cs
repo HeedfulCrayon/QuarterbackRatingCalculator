@@ -4,6 +4,6 @@ namespace QuarterbackRating.Model
 {
     public interface ICalculationService
     {
-        Task<decimal> Calculate(PasserStats passerStats);
+        Task<decimal> Calculate(decimal passAttempts, decimal passCompletions, decimal passYards, decimal touchdowns, decimal interceptions);
     }
 }

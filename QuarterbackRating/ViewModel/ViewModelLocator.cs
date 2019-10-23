@@ -13,8 +13,8 @@
 */
 
 using CommonServiceLocator;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using QuarterbackRating.Model;
 
 namespace QuarterbackRating.ViewModel
 {
@@ -32,6 +32,7 @@ namespace QuarterbackRating.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<IValidationService, ValidationService>();
         }
 
         public MainViewModel MainViewModel

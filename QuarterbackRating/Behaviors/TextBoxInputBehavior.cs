@@ -6,8 +6,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace QuarterbackRating
+namespace QuarterbackRating.Behaviors
 {
+    /// <summary>
+    /// Class for making sure that only decimal type digits get entered into a text box.
+    /// </summary>
     public class TextBoxInputBehavior : Behavior<TextBox>
     {
         const NumberStyles validNumberStyles = NumberStyles.AllowDecimalPoint |

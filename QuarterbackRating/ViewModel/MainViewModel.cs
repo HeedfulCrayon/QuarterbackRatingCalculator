@@ -1,23 +1,83 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using QuarterbackRating.Model;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace QuarterbackRating.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ObservableObject, IDataErrorInfo
     {
+        private readonly IValidationService validationService;
         private RelayCommand calculateCommand;
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel()
+
+        private string error;
+        private decimal? passAttempts;
+        private decimal? passCompletions;
+        private decimal? passYards;
+        private decimal? touchdowns;
+        private decimal? interceptions;
+        private decimal? rating;
+        private League selectedLeague;
+
+        public MainViewModel(IValidationService validationService)
         {
-            PasserStats = new PasserStats();
+            this.validationService = validationService;
         }
 
-        public PasserStats PasserStats { get; private set; }
-        public League SelectedLeague { get; set; }
+        public decimal? PassAttempts
+        {
+            get => passAttempts;
+            set => Set(() => PassAttempts, ref passAttempts, value);
+        }
+
+        public decimal? PassCompletions
+        {
+            get => passCompletions;
+            set => Set(() => PassCompletions, ref passCompletions, value);
+        }
+
+        public decimal? PassYards
+        {
+            get => passYards;
+            set => Set(() => PassYards, ref passYards, value);
+        }
+
+        public decimal? Touchdowns
+        {
+            get => touchdowns;
+            set => Set(() => Touchdowns, ref touchdowns, value);
+        }
+
+        public decimal? Interceptions
+        {
+            get => interceptions;
+            set => Set(() => Interceptions, ref interceptions, value);
+        }
+
+        public decimal? Rating
+        {
+            get => rating;
+            set => Set(() => Rating, ref rating, value);
+        }
+
+        public League SelectedLeague
+        {
+            get => selectedLeague;
+            set => Set(() => SelectedLeague, ref selectedLeague, value);
+        }
+
+
+        public string Error
+        {
+            get => error;
+            set => Set(() => Error, ref error, value);
+        }
+
+        public string this[string columnName]
+        {
+            get => Validate(columnName);
+        }
         public RelayCommand CalculateCommand
         {
             get
@@ -25,24 +85,18 @@ namespace QuarterbackRating.ViewModel
                 return calculateCommand ?? (calculateCommand = new RelayCommand(
                     async () =>
                     {
-                        await Calculate(PasserStats);
+                        await Calculate();
                     }, () => CanExecuteCalculation()));
             }
         }
 
         private bool CanExecuteCalculation()
         {
-            if (PasserStats.PassAttempts != 0)
-            {
-                if (PasserStats.PassAttempts != null && PasserStats.PassCompletions != null && PasserStats.PassYards != null && PasserStats.Interceptions != null && PasserStats.Touchdowns != null)
-                {
-                    return true;
-                }
-                }
-            return false;
+            Error = validationService.ValidateEntries(PassAttempts, PassCompletions, Touchdowns, Interceptions);
+            return !validationService.Errors;
         }
 
-        private async Task Calculate(PasserStats passerStats)
+        private async Task Calculate()
         {
             ICalculationService calculationService;
             if (SelectedLeague == League.NFL)
@@ -53,7 +107,13 @@ namespace QuarterbackRating.ViewModel
             {
                 calculationService = new NCAACalculationService();
             }
-            PasserStats.Rating = await calculationService.Calculate(passerStats);
+            Rating = await calculationService.Calculate(PassAttempts.Value, PassCompletions.Value, PassYards.Value, Touchdowns.Value, Interceptions.Value);
+        }
+
+        private string Validate(string propertyName)
+        {
+            string validationMessage = validationService.ValidateProperty(propertyName, PassAttempts, PassCompletions, PassYards, Touchdowns, Interceptions);
+            return validationMessage;
         }
     }
 }

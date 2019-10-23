@@ -4,19 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuarterbackRating"
+        xmlns:behaviors="clr-namespace:QuarterbackRating.Behaviors"
+        xmlns:helpers="clr-namespace:QuarterbackRating.Helpers"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="Quarterback Rating Calculator" MinWidth="284" MinHeight="506" SizeToContent="WidthAndHeight">
+        Title="Quarterback Rating Calculator" MinWidth="300" MinHeight="576" SizeToContent="WidthAndHeight">
     <Window.Resources>
-        <local:EnumItemsSource
+        <helpers:EnumItemsSource
             x:Key="LeagueItems"
             Type="{x:Type local:League}"/>
     </Window.Resources>
-    <Grid DataContext="{Binding MainViewModel, Source={StaticResource Locator}}" Width="184" Height="436" VerticalAlignment="Center">
-        <StackPanel HorizontalAlignment="Left" Height="436" VerticalAlignment="Center" Width="184">
+    <Grid DataContext="{Binding MainViewModel, Source={StaticResource Locator}}" Width="184" Height="496" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" Height="496" VerticalAlignment="Center" Width="184">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type TextBox}">
                     <Setter Property="Margin" Value="60,5,60,5"/>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="true">
+                            <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={RelativeSource Self}, 
+                       Path=(Validation.Errors)[0].ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
                 <Style TargetType="{x:Type ComboBox}">
                     <Setter Property="Margin" Value="50,5,50,5"/>
@@ -33,38 +42,39 @@
             <ComboBox ItemsSource="{StaticResource LeagueItems}"
             SelectedValue="{Binding SelectedLeague, Converter={StaticResource LeagueItems}}" HorizontalContentAlignment="Center" />
             <Label Content="Pass Attempts"/>
-            <TextBox Text="{Binding PasserStats.PassAttempts, Mode=TwoWay, TargetNullValue=''}">
+            <TextBox Text="{Binding PassAttempts, Mode=TwoWay, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                 <i:Interaction.Behaviors>
-                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                    <behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
             </TextBox>
             <Label Content="Pass Completions"/>
-            <TextBox Text="{Binding PasserStats.PassCompletions, Mode=TwoWay, TargetNullValue=''}" >
+            <TextBox Text="{Binding PassCompletions, Mode=TwoWay, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                 <i:Interaction.Behaviors>
-                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                    <behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
             </TextBox>
             <Label Content="Yards Gained"/>
-            <TextBox Text="{Binding PasserStats.PassYards, Mode=TwoWay, TargetNullValue=''}" >
+            <TextBox Text="{Binding PassYards, Mode=TwoWay, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                 <i:Interaction.Behaviors>
-                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                    <behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
             </TextBox>
             <Label Content="Touchdowns"/>
-            <TextBox Text="{Binding PasserStats.Touchdowns, Mode=TwoWay, TargetNullValue=''}" >
+            <TextBox Text="{Binding Touchdowns, Mode=TwoWay, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                 <i:Interaction.Behaviors>
-                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                    <behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
             </TextBox>
             <Label Content="Interceptions"/>
-            <TextBox Text="{Binding PasserStats.Interceptions, Mode=TwoWay, TargetNullValue=''}" >
+            <TextBox Text="{Binding Interceptions, Mode=TwoWay, TargetNullValue='', UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                 <i:Interaction.Behaviors>
-                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                    <behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
                 </i:Interaction.Behaviors>
             </TextBox>
-            <Button Content="Calculate" Command="{Binding CalculateCommand, Mode=OneWay}" CommandParameter="{Binding PasserStats, Mode=OneWay}"/>
+            <Button Content="Calculate" Command="{Binding CalculateCommand, Mode=OneWay}"/>
             <Label Content="Passer Rating" />
-            <Label Content="{Binding PasserStats.Rating, Mode=TwoWay}" ContentStringFormat="N2" FontWeight="Bold" FontSize="14" Foreground="Black"/>
+            <Label Content="{Binding Rating, Mode=TwoWay}" ContentStringFormat="N2" FontWeight="Bold" FontSize="14" Foreground="Black" Height="26"/>
+            <TextBlock Text="{Binding Error, Mode=TwoWay}" TextAlignment="Center" FontWeight="Bold" Foreground="Red" TextWrapping="Wrap"/>
         </StackPanel>
     </Grid>
 </Window>
