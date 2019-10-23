@@ -1,0 +1,70 @@
+﻿<Window x:Class="QuarterbackRating.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuarterbackRating"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        Title="Quarterback Rating Calculator" MinWidth="284" MinHeight="506" SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <local:EnumItemsSource
+            x:Key="LeagueItems"
+            Type="{x:Type local:League}"/>
+    </Window.Resources>
+    <Grid DataContext="{Binding MainViewModel, Source={StaticResource Locator}}" Width="184" Height="436" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Left" Height="436" VerticalAlignment="Center" Width="184">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Margin" Value="60,5,60,5"/>
+                </Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Margin" Value="50,5,50,5"/>
+                </Style>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Padding" Value="5,10,5,0"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="50,5,50,5"/>
+                </Style>
+            </StackPanel.Resources>
+            <Label Content="League Selection"/>
+            <ComboBox ItemsSource="{StaticResource LeagueItems}"
+            SelectedValue="{Binding SelectedLeague, Converter={StaticResource LeagueItems}}" HorizontalContentAlignment="Center" />
+            <Label Content="Pass Attempts"/>
+            <TextBox Text="{Binding PasserStats.PassAttempts, Mode=TwoWay, TargetNullValue=''}">
+                <i:Interaction.Behaviors>
+                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Label Content="Pass Completions"/>
+            <TextBox Text="{Binding PasserStats.PassCompletions, Mode=TwoWay, TargetNullValue=''}" >
+                <i:Interaction.Behaviors>
+                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Label Content="Yards Gained"/>
+            <TextBox Text="{Binding PasserStats.PassYards, Mode=TwoWay, TargetNullValue=''}" >
+                <i:Interaction.Behaviors>
+                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Label Content="Touchdowns"/>
+            <TextBox Text="{Binding PasserStats.Touchdowns, Mode=TwoWay, TargetNullValue=''}" >
+                <i:Interaction.Behaviors>
+                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Label Content="Interceptions"/>
+            <TextBox Text="{Binding PasserStats.Interceptions, Mode=TwoWay, TargetNullValue=''}" >
+                <i:Interaction.Behaviors>
+                    <local:TextBoxInputBehavior InputMode="DecimalInput"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Button Content="Calculate" Command="{Binding CalculateCommand, Mode=OneWay}" CommandParameter="{Binding PasserStats, Mode=OneWay}"/>
+            <Label Content="Passer Rating" />
+            <Label Content="{Binding PasserStats.Rating, Mode=TwoWay}" ContentStringFormat="N2" FontWeight="Bold" FontSize="14" Foreground="Black"/>
+        </StackPanel>
+    </Grid>
+</Window>
